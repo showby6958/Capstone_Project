@@ -52,5 +52,43 @@ body:
 
 2. 메모 공유
 
+app.get('/calendar/shared', authenticateToken, (req, res) => {
+    const userId = req.user.userId;
+
+    const sql = `
+        SELECT 
+            cn.note_date, 
+            cn.note_text, 
+            u.email AS shared_by 
+        FROM shared_notes sn
+        JOIN calendar_notes cn ON sn.note_id = cn.id
+        JOIN users u ON sn.sender_id = u.id
+        WHERE sn.recipient_id = ?
+    `;
+
+    db.query(sql, [userId], (error, results) => {
+        if (error) {
+            console.log(error);
+            return res.status(500).json({ message: 'Error fetching shared notes' });
+        }
+        res.status(200).json(results);
+    });
+});
+
+- 호출
+
+POST /calender/share
+
+body:
+{
+    "recipient_id": 2,
+    "note_id": 1
+}
+
+
+3. 공유된 메모 조회
+
+
+
 
 
