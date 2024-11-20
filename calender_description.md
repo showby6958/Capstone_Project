@@ -52,28 +52,22 @@ body:
 
 2. 메모 공유
 
-app.get('/calendar/shared', authenticateToken, (req, res) => {
-    const userId = req.user.userId;
+app.post('/calendar/share', authenticateToken, (req, res) => {
+    const { recipient_id, note_id } = req.body;
+    const senderId = req.user.userId;
 
-    const sql = `
-        SELECT 
-            cn.note_date, 
-            cn.note_text, 
-            u.email AS shared_by 
-        FROM shared_notes sn
-        JOIN calendar_notes cn ON sn.note_id = cn.id
-        JOIN users u ON sn.sender_id = u.id
-        WHERE sn.recipient_id = ?
-    `;
+    const sql = 'INSERT INTO shared_notes (sender_id, recipient_id, note_id) VALUES (?, ?, ?)';
+    const values = [senderId, recipient_id, note_id];
 
-    db.query(sql, [userId], (error, results) => {
+    db.query(sql, values, (error, result) => {
         if (error) {
             console.log(error);
-            return res.status(500).json({ message: 'Error fetching shared notes' });
+            return res.status(500).json({ message: 'Error sharing note' });
         }
-        res.status(200).json(results);
+        res.status(201).json({ message: 'Note shared successfully' });
     });
 });
+
 
 - 호출
 
