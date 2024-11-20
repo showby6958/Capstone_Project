@@ -22,7 +22,7 @@ note_id = 5 (유저 A가 만든 메모의 ID)
 
 ### API 엔드포인트 설계
 1. 캘린더에 메모 추가
-
+```
 app.post('/calendar/note', authenticateToken, (req, res) => {
     const { note_date, note_text } = req.body;
     const userId = req.user.userId;
@@ -38,20 +38,21 @@ app.post('/calendar/note', authenticateToken, (req, res) => {
         res.status(201).json({ message: 'Note added successfully' });
     });
 });
-
+```
 - 호출
-
+```
 POST /calender/note
-
+```
+```
 body:
 {
     "note_date": "2024-11-12",
     "note_text": "Team meeting at 10 AM"
 }
-
+```
 
 2. 메모 공유
-
+```
 app.post('/calendar/share', authenticateToken, (req, res) => {
     const { recipient_id, note_id } = req.body;
     const senderId = req.user.userId;
@@ -67,18 +68,19 @@ app.post('/calendar/share', authenticateToken, (req, res) => {
         res.status(201).json({ message: 'Note shared successfully' });
     });
 });
-
+```
 
 - 호출
-
+```
 POST /calender/share
-
+```
+```
 body:
 {
     "recipient_id": 2,
     "note_id": 1
 }
-
+```
 
 3. 공유된 메모 조회
 
