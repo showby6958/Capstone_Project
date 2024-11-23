@@ -48,7 +48,7 @@ app.get('/business-card/shared', authenticateToken, (req, res) => {
 ### 설계 명세서
 ## 1. 명함 공유
 - URL : POST http://localhost:3000/business-card/share
-- Headers : Authorization: Bearer <JWT 토큰>
+- Headers : Authorization: Bearer <JWT 토큰> (공유하고자 하는 유저의 JWT 토큰)
 - Body : 
 ```
 {
@@ -65,7 +65,7 @@ app.get('/business-card/shared', authenticateToken, (req, res) => {
 
 ## 2. 공유받은 명함 조회
 - URL : GET http://localhost:3000/business-card/shared
-- Headers : Authorization : Bearer <JWT 토큰>
+- Headers : Authorization : Bearer <JWT 토큰> (공유 받은 유저(recipient_id)의 JWT 토큰)
 - 응답 : 
 ```
 [
